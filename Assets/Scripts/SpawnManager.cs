@@ -8,6 +8,7 @@ public class SpawnManager : MonoBehaviour
 
     [SerializeField] protected GameObject enemyPrefabs;
 
+    //Get random position for player
     private Vector3 GenerateRandomPosition()
     {
         Vector3 randomPos = new Vector3(Random.Range(-spawnRange, spawnRange), 0, Random.Range(-spawnRange, spawnRange));

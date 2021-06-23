@@ -11,7 +11,6 @@ public class Enemy : MonoBehaviour
     private Rigidbody enemyRB;
 
     // Start is called before the first frame update
-    [SerializeField]
     protected void Start()
     {
         enemyRB = this.GetComponent<Rigidbody>();
@@ -21,7 +20,7 @@ public class Enemy : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Vector3 lookDirectiion = (player.transform.position - this.transform.position).normalized;
-        enemyRB.AddForce(lookDirectiion * speed);
+        Vector3 enemyDirection = (player.transform.position - this.transform.position).normalized;
+        enemyRB.AddForce(enemyDirection * speed);
     }
 }
