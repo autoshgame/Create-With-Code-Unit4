@@ -10,17 +10,32 @@ public class Enemy : MonoBehaviour
 
     private Rigidbody enemyRB;
 
-    // Start is called before the first frame update
+    void EnemiesMove()
+    {
+        Vector3 enemyDirection = (player.transform.position - this.transform.position).normalized;
+        enemyRB.AddForce(enemyDirection * speed);
+    }
+
+
+    void OutOfBound()
+    {
+        if(this.transform.position.y < -10)
+        {
+            Destroy(this.gameObject);
+        }
+    }
+
+   
     protected void Start()
     {
         enemyRB = this.GetComponent<Rigidbody>();
         player = GameObject.Find("Player");
     }
 
-    // Update is called once per frame
+    
     void Update()
     {
-        Vector3 enemyDirection = (player.transform.position - this.transform.position).normalized;
-        enemyRB.AddForce(enemyDirection * speed);
+        EnemiesMove();
+        OutOfBound();
     }
 }

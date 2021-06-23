@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
     protected GameObject focalPoint;
     [SerializeField] protected GameObject powerupIndicator;
 
+    
     private void OnTriggerEnter(Collider other)
     {
         if(other.gameObject.CompareTag("Powerup"))
@@ -25,7 +26,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-
+   
     private void OnCollisionEnter(Collision collision)
     {
         if(collision.gameObject.CompareTag("Enemy") && hasPowerup)
@@ -44,14 +45,14 @@ public class PlayerController : MonoBehaviour
         powerupIndicator.gameObject.SetActive(false);
     }
 
-    // Start is called before the first frame update
+    
     void Start()
     {
         playerRB = this.GetComponent<Rigidbody>();
         focalPoint = GameObject.Find("Focal Point");
     }
 
-    // Update is called once per frame
+    
     void Update()
     {
         float fowardInput = Input.GetAxis("Vertical");
