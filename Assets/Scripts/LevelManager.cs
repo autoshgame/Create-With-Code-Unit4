@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class RotateCamera : MonoBehaviour
+public class LevelManager : MonoBehaviour
 {
-    [SerializeField] protected float rotationSpeed;
+    public float gameLevel = 3f;
 
     // Start is called before the first frame update
     void Start()
     {
-
+        
     }
 
     // Update is called once per frame

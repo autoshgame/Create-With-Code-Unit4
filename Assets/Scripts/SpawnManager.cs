@@ -6,10 +6,12 @@ public class SpawnManager : MonoBehaviour
 {
     [SerializeField] protected float spawnRange = 9f;
     [SerializeField] protected float enemiesCount = 3f;
-    protected float returnNumber = 3f;     //Variable which helps return the old amount of enemies 
-    
-    [SerializeField] protected GameObject enemyPrefabs;
+    protected float returnEnemies = 3f;     //Variable which helps return the old amount of enemies 
+
+    [SerializeField] protected GameObject[] enemyPrefabs;
     [SerializeField] protected GameObject powerupPrefabs;
+
+    [SerializeField] protected LevelManager getLevelManager;
 
     
     private Vector3 GenerateRandomPosition()
@@ -19,31 +21,38 @@ public class SpawnManager : MonoBehaviour
     }
 
 
-    void SpawnEnemyWave()
+    void GenerateEnemyEachWave()
     {
-        for (int i = 0; i < enemiesCount; ++i)
+        int enemyIndex = Random.Range(0, enemyPrefabs.Length);
+        for (int i = 0; i < getLevelManager.gameLevel; ++i)
         {
-            Instantiate(enemyPrefabs, GenerateRandomPosition(), enemyPrefabs.transform.rotation);
+            Instantiate(enemyPrefabs[enemyIndex], GenerateRandomPosition(), enemyPrefabs[enemyIndex].transform.rotation);
         }
     }
 
+
+    void GetThroughWave()
+    {
+        enemiesCount = FindObjectsOfType<Enemy>().Length;
+        if(enemiesCount == 0)
+        {
+            returnEnemies += 1;
+            enemiesCount += returnEnemies;
+            getLevelManager.gameLevel = returnEnemies;
+            GenerateEnemyEachWave();
+            Instantiate(powerupPrefabs, GenerateRandomPosition(), powerupPrefabs.transform.rotation);
+        }
+    }
     
     // Start is called before the first frame update
     void Start()
     {
-        SpawnEnemyWave();
+        GenerateEnemyEachWave();        //First time create ememies
     }
 
     // Update is called once per frame
     void Update()
     {
-        enemiesCount = FindObjectsOfType<Enemy>().Length;
-        if(enemiesCount == 0)
-        {
-            returnNumber += 1;
-            enemiesCount += returnNumber;
-            SpawnEnemyWave();
-            Instantiate(powerupPrefabs, GenerateRandomPosition(), powerupPrefabs.transform.rotation);
-        }
+        GetThroughWave();
     }
 }

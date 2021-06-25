@@ -11,13 +11,21 @@ public class PlayerController : MonoBehaviour
 
     protected Rigidbody playerRB;
 
-    protected GameObject focalPoint;
     [SerializeField] protected GameObject powerupIndicator;
 
-    
+    void playerMove()
+    {
+        float verticalInput = Input.GetAxis("Vertical");
+        playerRB.AddForce(Vector3.forward * speed * verticalInput, ForceMode.Impulse);
+        float horizontalInput = Input.GetAxis("Horizontal");
+        playerRB.AddForce(Vector3.right * speed * horizontalInput, ForceMode.Impulse);
+        powerupIndicator.transform.position = transform.position + new Vector3(0, 0.5f, 0);
+    }
+
+    //destroy power up and set coroutine for power up
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.CompareTag("Powerup"))
+        if(other.gameObject.CompareTag("SpeedPowerUp"))
         {
             hasPowerup = true;
             Destroy(other.gameObject);
@@ -26,10 +34,10 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-   
+    
     private void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.CompareTag("Enemy") && hasPowerup)
+        if(collision.gameObject.CompareTag("Enemies") && hasPowerup)
         {
             Rigidbody enemyRigidbody = collision.gameObject.GetComponent<Rigidbody>();
             Vector3 distanceFromEnemy = (collision.gameObject.transform.position - this.transform.position);
@@ -37,7 +45,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-
+    //IEnumerator for power - up
     IEnumerator PowerupCountDownRoutine()
     {
         yield return new WaitForSeconds(7);
@@ -49,15 +57,12 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         playerRB = this.GetComponent<Rigidbody>();
-        focalPoint = GameObject.Find("Focal Point");
     }
 
     
     void Update()
     {
-        float fowardInput = Input.GetAxis("Vertical");
-        playerRB.AddForce(focalPoint.transform.forward * speed * fowardInput, ForceMode.Impulse);
-        powerupIndicator.transform.position = transform.position + new Vector3(0, 0.5f, 0);
+        playerMove();
     }
 
 }

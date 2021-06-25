@@ -10,6 +10,7 @@ public class Enemy : MonoBehaviour
 
     private Rigidbody enemyRB;
 
+
     void EnemiesMove()
     {
         Vector3 enemyDirection = (player.transform.position - this.transform.position).normalized;
